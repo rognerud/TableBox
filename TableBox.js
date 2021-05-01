@@ -1,4 +1,4 @@
-define(["qlik","./getMasterItems", "qvangular","jquery", "./prop", "css!./style.css", "./tableHeadFixer", "./d3.v3.min"], function(qlik,qvangular,$, prop) {
+define(["qlik","./getMasterItems", "qvangular","jquery", "./prop", "css!./style.css", "./tableHeadFixer", "./d3.v3.min"], function(qlik,qvangular,qv,$, prop) {
 	'use strict';
 	var tableToExcel = (function() {
 		// Define your style class template.
