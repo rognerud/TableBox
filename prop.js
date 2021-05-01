@@ -1,4 +1,4 @@
-define(["qlik","./getMasterItems", "jquery", "css!./style.css"], function (qlik, getMasterItems, $) {
+define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $) {
 	var colorInfo = {
 			label: "Add all the below as string(='color | bdcolor | textalign | header bgcolor | header color')",
 			component: "text"
