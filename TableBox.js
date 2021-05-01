@@ -156,7 +156,12 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					mesSel='',
 					urlNavigation, hide = '',
 					navType = 1,
-					SubTotal = '';
+					SubTotal = ''
+					Dialogable = '';
+
+				if (navType == 4) {
+					Dialogable = 'dialogable'
+				}
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -182,7 +187,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				if (cell.qIsOtherCell) {
 					cell.qText = dimensionInfo[key].othersLabel;
 				}
-				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + "' dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
+				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + Dialogable + "' dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
 				if (!isNaN(cell.qNum)) {
 					html += "class='numeric'";
 				}
