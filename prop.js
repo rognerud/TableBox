@@ -1,4 +1,4 @@
-define(["qlik", "jquery"], function(qlik, $) {
+define(["qlik", "jquery","./getMasterItems", "css!./style.css"], function(qlik, getMasterItems, $) {
 	var colorInfo = {
 			label: "Add all the below as string(='color | bdcolor | textalign | header bgcolor | header color')",
 			component: "text"
@@ -13,7 +13,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 			type: "string",
 			ref: "qAttributeExpressions.0.qExpression",
 			label: "Text Color",
-			//expression: "always",
 			component: "expression",
 			defaultValue: "='#000'"
 		},
@@ -21,18 +20,9 @@ define(["qlik", "jquery"], function(qlik, $) {
 			type: "string",
 			ref: "qAttributeExpressions.1.qExpression",
 			label: "Background Color",
-			//expression: "always",
 			component: "expression",
 			defaultValue: "='white'"
 		},
-		/*textaligntext = {
-			type: "string",
-			ref: "qAttributeExpressions.2.qExpression",
-			label: "Text align(left,right,center)",
-			//expression: "always",
-			component: "expression",
-			defaultValue: "='center'"
-		},*/
 		textalign = {
 			type: "string",
 			component: "dropdown",
@@ -53,7 +43,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 			type: "string",
 			ref: "qAttributeExpressions.3.qExpression",
 			label: "Text size(in px)",
-			//expression: "always",
 			component: "expression",
 			defaultValue: "='12'"
 		},
@@ -61,9 +50,7 @@ define(["qlik", "jquery"], function(qlik, $) {
 			type: "string",
 			ref: "qAttributeExpressions.4.qExpression",
 			label: "Additional Style(Use standard CSS)",
-			//expression: "always",
 			component: "expression"
-			//defaultValue: "=''"
 		},
 		HeaderAlign = {
 			type: "string",
@@ -87,7 +74,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 			ref: "qDef.backgroundcolorHeader",
 			label: "Header Background Color",
 			expression: "always",
-			//component: "expression",
 			defaultValue: "='white'"
 		},
 		txtcolorHeader = {
@@ -95,7 +81,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 			ref: "qDef.txtcolorHeader",
 			label: "Header Text Color",
 			expression: "always",
-			//component: "expression",
 			defaultValue: "='#000'"
 		},
 		colSpanHeader = {
@@ -269,13 +254,15 @@ define(["qlik", "jquery"], function(qlik, $) {
 						}, {
 							value: "3",
 							label: "Sheet Nav"
+						}, {
+							value: "4",
+							label: "Dialog Nav"
 						}]
 					},
 					sheetNavigation: {
 						type: "string",
 						ref: "qAttributeExpressions.5.qExpression",
 						label: "Sheet Navigation",
-						//expression: "always",
 						component: "expression",
 						show: function(d) {
 							return d.qDef.NavigationType == 3;
@@ -285,10 +272,93 @@ define(["qlik", "jquery"], function(qlik, $) {
 						type: "string",
 						ref: "qAttributeExpressions.6.qExpression",
 						label: "URL Navigation",
-						//expression: "always",
 						component: "expression",
 						show: function(d) {
 							return d.qDef.NavigationType == 2;
+						}
+					},
+					DialogTitle: {
+						ref: "dialogtitle",
+						label: "Dialog Title",
+						type: "string",
+						defaultValue: "Title",
+						expression: "optional",
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					ButtonText: {
+						ref: "ButtonText",
+						label: "Button Text",
+						type: "string",
+						defaultValue: "View Dialog",
+						expression: "optional",
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					Dialogwidth: {
+						ref: "dialogwidth",
+						label: "Dialog Width (write px or %)",
+						type: "string",
+						defaultValue: "50%",
+						expression: "optional",
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					Dialogheight: {
+						ref: "Dialogheight",
+						label: "Dialog Height (write px or %)",
+						type: "string",
+						defaultValue: "300px",
+						expression: "optional",
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					defaultMasterObject: {
+						type: "string",
+						component: "dropdown",
+						label: "Master Object",
+						ref: "defaultMasterObject",
+						options: function () {
+							return getMasterItems().then(function (items) {
+								return items;
+							});
+						},
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					ShowPara: {
+						type: "boolean",
+						label: "Add HTML Paragraph",
+						ref: "ShowPara",
+						defaultValue: false,
+						show: function(d) {
+							return d.qDef.NavigationType == 4;
+						}
+					},
+					Paragraph: {
+						label: "HTML Paragraph",
+						component: "textarea",
+						rows: 7,
+						maxlength: 100000,
+						ref: "Paragraph",
+						expression: "optional",
+						show: function (d) {
+							return d.ShowPara;
+						}
+					},
+					Paragraphheight: {
+						ref: "Paragraphheight",
+						label: "Paragraph Height (write px or %)",
+						type: "string",
+						defaultValue: "300",
+						expression: "optional",
+						show: function (d) {
+							return d.ShowPara;
 						}
 					},
 					hide: hide
@@ -410,7 +480,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 						type: "string",
 						ref: "qAttributeExpressions.5.qExpression",
 						label: "Value to select(Field;value|Field;value:value:..)",
-						//expression: "always",
 						component: "expression",
 						show:function(d){
 							return d.qDef.mesSelEnable;
@@ -772,8 +841,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 							},
 							fixHeader: fixHeader,
 							fixFooter: fixFooter,
-							//fixRight: fixRight,
-							//fixRightCol: fixRightCol
 							fixLeft: fixLeft,
 							fixLeftCol: fixLeftCol,
 							//end
@@ -818,7 +885,6 @@ define(["qlik", "jquery"], function(qlik, $) {
 				type: "items",
 				label: "Custom Header & Row",
 				items: {
-					//Header Start
 					addCustomHeader: {
 						type: "items",
 						label: "Add Custom Header",

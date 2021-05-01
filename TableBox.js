@@ -1,4 +1,4 @@
-define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHeadFixer", "./d3.v3.min"], function(qlik, qv,$, prop) {
+define(["qlik","./getMasterItems", "qvangular","jquery", "./prop", "css!./style.css", "./tableHeadFixer", "./d3.v3.min"], function(qlik,qvangular,$, prop) {
 	'use strict';
 	var tableToExcel = (function() {
 		// Define your style class template.
@@ -191,7 +191,11 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				} else if (navType == 3) {
 				//text-decoration:underline;
 					html += '><span style="" sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</span></td>';
-				} else {
+				} else if (navType == 4) {
+					
+					html += '>'
+				}  
+				else {
 					html += '><div sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</div></td>';
 				}
 			});
@@ -241,6 +245,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 		});
 		return html;
 	}
+
 	return {
 		initialProperties: {
 			customRow: [],
@@ -262,10 +267,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			snapshot: false,
 			export: true,
 			exportData: true,
-			//copyValue:true
 		},
 		paint: function($element, layout) {
-			console.log(layout);
 			var objid = layout.qInfo.qId;
 			$element.attr("id", "table_container_" + objid);
 			$element.css("overflow", "scroll");
@@ -291,7 +294,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				enableTotal = layout.enableTotal,
 				totalAlign = layout.totalAlign,
 				header = '',
-				//headerFontSize = (layout.headerFontSize == undefined ? '14px' : layout.headerFontSize),
 				CustomHeader = '',
 				CustomHeaderPos = 1,
 				totalHtml = '',
@@ -343,7 +345,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					FStyle = txtcolor + backgroundcolor + TCellPadding + FontSize;
 				totalHtml += (totalAlign == "2" ? "<tfoot>" : "<thead>");
 				totalHtml += "<tr id='total_top_" + objid + "'><td style='" + txtcolor + backgroundcolor + TBorderColor + "'><div style='" + FStyle + "'>Total</div></td>";
-				//colspan='"+(dimCount)+"'
 				for (var i = 0; i < (dimCount - 1); i++) {
 					totalHtml += "<td style='font-weight:600; text-align:"+layout.TotalTextAlign+"; " + txtcolor + backgroundcolor + TBorderColor + "' class='dummy'><div style='" + FStyle + "'>&nbsp;</div></td>";
 				}
@@ -409,24 +410,15 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					gen_sums('table_' + objid, format, xtraCalc, xtraCalcStr);
 				}
 				tabletd = '';
-				/*
-				<tr class="totals">
-					<th colspan="" >Total</th><td class="total"></td><td class="total"></td><td class="total"></td>
-				</tr>
-				*/
 			});
 			//Fixed Right or Left or header or footer
 			if (layout.fixHeader || layout.fixFooter) {
 				var fixRightCol = 0,
 					fixLeftCol = 0;
-				//if(layout.fixRight){
-				//	fixRightCol=layout.fixRightCol;
-				//}
 				if (layout.fixLeft) {
 					fixLeftCol = layout.fixLeftCol;
 				}
 				$('#table_' + objid).tableHeadFixer({
-					//'right' : fixRightCol,
 					'head': layout.fixHeader,
 					'left': fixLeftCol,
 					'foot': layout.fixFooter
@@ -456,13 +448,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var parent = this.parentNode;
 				if (this.hasAttribute("dim-col")) {
 					var col = parseInt(this.getAttribute("dim-col"), 10);
-					//setSortOrder(self, col);
-					//reverseOrder(self, col, 'dim');
 				}
 				if (this.hasAttribute("mes-col")) {
 					var col = parseInt(this.getAttribute("mes-col"), 10);
-					//reverseOrder(self, col, 'mes');
-					//setSortOrder(self, col);
 				}
 			});
 			if (layout.enableNavigation) {
@@ -519,33 +507,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				}
 			});
 			
-			
-			
-			// added
-			
-			
-			/*
-			let promises = Array.apply(null, Array(numberOfPages)).map(function (data, index) {
-				let page = {
-					qTop: (pageheight * index) + index,
-					qLeft: 0,
-					qWidth: column,
-					qHeight: pageheight
-				};
-				
-				console.log("Details",pageheight,column,numberOfPages,index,data);
-				return self.getHyperCubeData('/qHyperCubeDef', [page]);
-			}, this)
-			
-			Promise.all(promises).then(function(data) {
-				console.log("PromiceGetDataNew",data);
-			});
-			*/
-			
 			ColGrp = '';
 
-			
-			
 			return qlik.Promise.resolve();
 		}
 	};
