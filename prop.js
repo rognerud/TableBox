@@ -334,7 +334,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					ShowPara: {
 						type: "boolean",
 						label: "Add HTML Paragraph",
-						ref: "ShowPara",
+						ref: "DialogShowPara",
 						defaultValue: false,
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
@@ -345,20 +345,20 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						component: "textarea",
 						rows: 7,
 						maxlength: 100000,
-						ref: "Paragraph",
+						ref: "ParagraphDialog",
 						expression: "optional",
 						show: function (d) {
-							return d.ShowPara;
+							return d.DialogShowPara;
 						}
 					},
 					Paragraphheight: {
-						ref: "Paragraphheight",
+						ref: "ParagraphDialogheight",
 						label: "Paragraph Height (write px or %)",
 						type: "string",
 						defaultValue: "300",
 						expression: "optional",
 						show: function (d) {
-							return d.ShowPara;
+							return d.DialogShowPara;
 						}
 					},
 					hide: hide
