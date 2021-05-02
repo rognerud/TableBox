@@ -278,7 +278,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					DialogTitle: {
-						ref: "dialogtitle",
+						ref: "qDef.dialogtitle",
 						label: "Dialog Title",
 						type: "string",
 						defaultValue: "Title",
@@ -288,7 +288,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					ButtonText: {
-						ref: "buttonText",
+						ref: "qDef.buttonText",
 						label: "Button Text",
 						type: "string",
 						defaultValue: "View Dialog",
@@ -298,7 +298,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					Dialogwidth: {
-						ref: "dialogWidth",
+						ref: "qDef.dialogWidth",
 						label: "Dialog Width (write px or %)",
 						type: "string",
 						defaultValue: "50%",
@@ -308,7 +308,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					Dialogheight: {
-						ref: "dialogheight",
+						ref: "qDef.dialogheight",
 						label: "Dialog Height (write px or %)",
 						type: "string",
 						defaultValue: "300px",
@@ -318,10 +318,10 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					DialogMasterObject: {
+						ref: "qDef.dialogMasterObject",
 						type: "string",
 						component: "dropdown",
 						label: "Master Object",
-						ref: "dialogMasterObject",
 						options: function () {
 							return getMasterItems().then(function (items) {
 								return items;
@@ -332,27 +332,27 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					ShowPara: {
+						ref: "qDef.dialogShowPara",
 						type: "boolean",
 						label: "Add HTML Paragraph",
-						ref: "dialogShowPara",
 						defaultValue: false,
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
 					},
 					Paragraph: {
+						ref: "qDef.paragraph",
 						label: "HTML Paragraph",
 						component: "textarea",
 						rows: 7,
 						maxlength: 100000,
-						ref: "paragraph",
 						expression: "optional",
 						show: function (d) {
 							return d.DialogShowPara;
 						}
 					},
 					Paragraphheight: {
-						ref: "paragraphHeight",
+						ref: "qDef.paragraphHeight",
 						label: "Paragraph Height (write px or %)",
 						type: "string",
 						defaultValue: "300",
