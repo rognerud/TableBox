@@ -138,7 +138,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 
 	function createRows(rows, dimensionInfo, measureInfo, layout) {
 		//debugger;
-		var html = "",Rowcss=layout.Rowcss,
+		var html = "",
+			Rowcss=layout.Rowcss,
 			measure = 0,
 			wraptext = (layout.wraptext ? 'white-space: pre-wrap !important;' : ''),
 			BorderColor = layout.BorderColor,
@@ -157,11 +158,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					urlNavigation, hide = '',
 					navType = 1,
 					SubTotal = ''
-					Dialogable = '';
+					Dialogable = ''
+					;
 
-				if (navType == 4) {
-					Dialogable = 'dialogable'
-				}
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -169,6 +168,22 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					sheetNavigation = cell.qAttrExps.qValues["5"].qText;
 					urlNavigation = cell.qAttrExps.qValues["6"].qText;
 					navType = dimensionInfo["0"].NavigationType;
+					if (navType == 4) {
+						var	Dialogable = 'dialogable',
+						buttonText = dimensionInfo["0"].ButtonText, 
+						dialogWidth = dimensionInfo["0"].Dialogwidth,
+						dialogHeight = dimensionInfo["0"].Dialogheight,
+						dialogMasterObject = dimensionInfo["0"].DialogMasterObject,
+						dialogShowPara = dimensionInfo["0"].ShowPara,
+						paragraph = dimensionInfo["0"].Paragraph,
+						paragraphHeight = dimensionInfo["0"].Paragraphheight,
+						layoutid = layout.qInfo.qId,
+						btn = '<div class="lui-buttongroup">',
+						htm = '',
+						ShowDialogTitle = layout.ShowDialogTitle,
+						ShowExport = layout.ShowExport,
+						ShowClose = layout.ShowClose;
+					}
 					if (sheetNavigation == 0 || sheetNavigation == '0') {
 						sheetNavigation = 'nosel';
 					} else {
@@ -197,8 +212,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				//text-decoration:underline;
 					html += '><span style="" sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</span></td>';
 				} else if (navType == 4) {
-					
-					html += '>'
+					html += '><button path="' + path + '" class="lui-button lui-dialog__button view_dialog_'+layoutid+'" Dialog-Title="' + buttonText + '" Dialog-width="' + dialogWidth + '" Dialog-height="' + dialogHeight + '" obj-id="' + dialogMasterObject + '" view-id="' + layoutid + '">' + buttonText + '</button>' + '</span></td>';
 				}  
 				else {
 					html += '><div sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</div></td>';
@@ -277,7 +291,23 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			var objid = layout.qInfo.qId;
 			$element.attr("id", "table_container_" + objid);
 			$element.css("overflow", "scroll");
+			
+			var dialogconfig = {
+				host: window.location.hostname,
+				prefix: "/",
+				port: window.location.port,
+				isSecure: window.location.protocol === "https:"
+			};
+				
+				// layoutid = layout.qInfo.qId,
+				// btn = '<div class="lui-buttongroup">',
+				// htm = '',
+				// ShowDialogTitle = layout.ShowDialogTitle,
+				// ShowExport = layout.ShowExport,
+				// ShowClose = layout.ShowClose;
+			
 			var app= qlik.currApp(),
+				sheetId = qlik.navigation.getCurrentSheetId().sheetId,
 				customWidth = layout.customWidth,
 				html = "<table id='table_" + objid + "'" + "style='border: 0px solid #ddd; table-layout: " + (customWidth ? 'auto' : 'fixed') + "; width:" + (customWidth ? layout.tableWidth : '100%') + "; '" + "><thead>",
 				self = this,
@@ -429,6 +459,56 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					'foot': layout.fixFooter
 				});
 			}
+			// Fixed header end
+			// Add click functions to ".selectable" items
+			$(".cancel_"+layoutid).click(function () {
+				$('#comment-diloag-' + layoutid).css("display", "none");
+			});
+
+			$element.find(".dialogable").on("click", function() {
+				// Get the dimension column number
+				var dimCol = parseInt(this.getAttribute("dim-col"));
+				// Get the dimension value index
+				var dimInd = parseInt(this.getAttribute("dim-index"));
+				self.backendApi.selectValues(dimCol, [dimInd], true);
+				// lock Measure
+				$("#table_" + objid + " td.selectableMes").each(function(k, v) {
+					$(v).addClass("cell-locked");
+				});
+				var obj = $(this).attr("obj-id");
+				var title = $(this).attr("Dialog-Title");
+				var width = $(this).attr("Dialog-width");
+				var height = $(this).attr("Dialog-height");
+				var path = $(this).attr("path");
+				var ShowPara = layout.listItems[path].ShowPara;
+				var Paragraph = layout.listItems[path].Paragraph;
+				var Paragraphheight = layout.listItems[path].Paragraphheight;
+				$('#download_file').hide();
+				$("#comment-diloag-" + layoutid).css("left", "0");
+				$("#comment-diloag-" + layoutid).css("top", "0");
+				$('#Dialog-Title').html(title);
+				$("#comment-diloag-" + layoutid).css("display", "");
+				$(".dialog-content").css("width", width);
+				$("#cont-" + layoutid).css("height", height);
+				if (ShowPara == "false" || ShowPara === false) {
+					$("#para-" + layoutid).hide();
+				} else {
+					$("#para-" + layoutid).show().css("height",Paragraphheight).html(Paragraph);
+				}
+				app.getObject('cont-' + layoutid, obj).then(function (modal) {
+					qlik.resize(this);
+					// export data excel
+					var title = modal.layout.qMeta.title;
+					$('#Export').click(function () {
+						modal.exportData().then(function (reply) {
+							var url = (config.isSecure ? "https://" : "http://") + config.host + config.port + reply.qUrl;
+							console.log('qUrlModified', url);
+							$('#download_file').attr("href", url);
+							$('#download_file').show();
+						});
+					});
+				});
+			});
 			// Fixed header end
 			// Add click functions to ".selectable" items
 			if (layout.enableSelections) {

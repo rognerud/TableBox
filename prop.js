@@ -288,7 +288,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					ButtonText: {
-						ref: "ButtonText",
+						ref: "buttonText",
 						label: "Button Text",
 						type: "string",
 						defaultValue: "View Dialog",
@@ -298,7 +298,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					Dialogwidth: {
-						ref: "dialogwidth",
+						ref: "dialogWidth",
 						label: "Dialog Width (write px or %)",
 						type: "string",
 						defaultValue: "50%",
@@ -308,7 +308,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					Dialogheight: {
-						ref: "Dialogheight",
+						ref: "dialogheight",
 						label: "Dialog Height (write px or %)",
 						type: "string",
 						defaultValue: "300px",
@@ -317,11 +317,11 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 							return d.qDef.NavigationType == 4;
 						}
 					},
-					defaultMasterObject: {
+					DialogMasterObject: {
 						type: "string",
 						component: "dropdown",
 						label: "Master Object",
-						ref: "defaultMasterObject",
+						ref: "dialogMasterObject",
 						options: function () {
 							return getMasterItems().then(function (items) {
 								return items;
@@ -334,7 +334,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					ShowPara: {
 						type: "boolean",
 						label: "Add HTML Paragraph",
-						ref: "DialogShowPara",
+						ref: "dialogShowPara",
 						defaultValue: false,
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
@@ -345,14 +345,14 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						component: "textarea",
 						rows: 7,
 						maxlength: 100000,
-						ref: "ParagraphDialog",
+						ref: "paragraph",
 						expression: "optional",
 						show: function (d) {
 							return d.DialogShowPara;
 						}
 					},
 					Paragraphheight: {
-						ref: "ParagraphDialogheight",
+						ref: "paragraphHeight",
 						label: "Paragraph Height (write px or %)",
 						type: "string",
 						defaultValue: "300",
