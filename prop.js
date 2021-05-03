@@ -302,7 +302,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						type: "string",
 						label: "Dialog Height (write px or %)",
 						component: "expression",
-						defaultValue: "='1200px'",
+						defaultValue: "='900px'",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
@@ -839,7 +839,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 							InverseColors: {
 								type: "boolean",
 								component: "switch",
-								label: "Invert colors",
+								label: "Invert colors (requires reload)",
 								ref: "DialogluiInverse",
 								options: [{
 									value: true,
@@ -848,15 +848,12 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 									value: false,
 									label: "Not inverted"
 								}],
-								defaultValue: false,
-								show: function(d) {
-									return d.qDef.NavigationType == 4;
-								}
+								defaultValue: false
 							},
 							AllowExport: {
 								type: "boolean",
 								component: "switch",
-								label: "Show Exportbutton",
+								label: "Show Exportbutton (requires reload)",
 								ref: "DialogShowExport",
 								options: [{
 									value: true,
@@ -865,10 +862,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 									value: false,
 									label: "Hide"
 								}],
-								defaultValue: false,
-								show: function(d) {
-									return d.qDef.NavigationType == 4;
-								}
+								defaultValue: false
 							},
 							// end total
 						}

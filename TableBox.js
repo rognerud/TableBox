@@ -515,8 +515,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			DialogluiInverse = layout.DialogluiInverse,
 			DialogShowExport = layout.DialogShowExport;
 			
-			
-
 			var htm = '',
 			layoutid = layout.qInfo.qId;
 			// add html
@@ -555,9 +553,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				
 				$("#comment-diloag-" + layoutid).css("left", "0");
 				$("#comment-diloag-" + layoutid).css("top", "0");
-				$("#comment-diloag-" + layoutid).css("maxHeight", height);
 				$('#Dialog-Title').html(title);
-				$("#comment-diloag-" + layoutid).slideDown("slow")//.css("display", "");
+				$("#comment-diloag-" + layoutid).slideDown("fast")//.css("display", "");
 				$(".dialog-content").css("width", width);
 				$("#para-" + layoutid).hide();
 				$('#download_file').hide();
