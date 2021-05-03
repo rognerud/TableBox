@@ -282,7 +282,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						type: "string",
 						label: "DialogTitle",
 						component: "expression",
-						defaultValue: "Test",
+						defaultValue: "='Test'",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
@@ -292,7 +292,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						type: "string",
 						label: "Dialog Width (write px or %)",
 						component: "expression",
-						defaultValue: "50%",
+						defaultValue: "='90%'",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
@@ -302,7 +302,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						type: "string",
 						label: "Dialog Height (write px or %)",
 						component: "expression",
-						defaultValue: "300px",
+						defaultValue: "='1200px'",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
@@ -321,6 +321,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 							return d.qDef.NavigationType == 4;
 						}
 					},
+
 					hide: hide
 				}
 			},
@@ -834,7 +835,41 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								show: function(d) {
 									return d.enableTotal;
 								}
-							}
+							},
+							InverseColors: {
+								type: "boolean",
+								component: "switch",
+								label: "Invert colors",
+								ref: "DialogluiInverse",
+								options: [{
+									value: true,
+									label: "Inverted"
+								}, {
+									value: false,
+									label: "Not inverted"
+								}],
+								defaultValue: false,
+								show: function(d) {
+									return d.qDef.NavigationType == 4;
+								}
+							},
+							AllowExport: {
+								type: "boolean",
+								component: "switch",
+								label: "Show Exportbutton",
+								ref: "DialogShowExport",
+								options: [{
+									value: true,
+									label: "Show"
+								}, {
+									value: false,
+									label: "Hide"
+								}],
+								defaultValue: false,
+								show: function(d) {
+									return d.qDef.NavigationType == 4;
+								}
+							},
 							// end total
 						}
 					}

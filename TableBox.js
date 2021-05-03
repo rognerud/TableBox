@@ -270,7 +270,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			//copyValue:true
 		},
 		paint: function($element, layout) {
-			console.log(layout);
+			// console.log(layout);
 			var objid = layout.qInfo.qId;
 			$element.attr("id", "table_container_" + objid);
 			$element.css("overflow", "scroll");
@@ -511,13 +511,17 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				prefix: "/",
 				port: window.location.port,
 				isSecure: window.location.protocol === "https:"
-			};
+			},
+			DialogluiInverse = layout.DialogluiInverse,
+			DialogShowExport = layout.DialogShowExport;
 			
+			
+
 			var htm = '',
 			layoutid = layout.qInfo.qId;
 			// add html
 			htm += '<div id="comment-diloag-' + layoutid + '" style="display: none;">';
-			htm += '<div class="lui-dialog dialog-content lui-dialog--inverse"  style="">';
+			htm += '<div class="lui-dialog dialog-content '+(DialogluiInverse?'lui-dialog--inverse':'')+'"  style="">';
 			htm += '<div class="lui-dialog__header" style="">';
 			htm += '<div class="lui-dialog__title" id="Dialog-Title"></div>';
 			htm += '</div>';
@@ -526,8 +530,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			htm += '<div id="para-' + layoutid + '" style="height: 100px;overflow: scroll;padding: 5px;margin: 5px;border: 1px solid #ccc;"></div>';
 			htm += '<div class="lui-dialog__footer">';
 			htm += '<a target="_blank" id="download_file" >Click here to download your data file.</a>';
-			htm += '<button id="Export" class="lui-button lui-button--inverse lui-dialog__button export" style=""><i class="lui-icon  lui-icon--export" style="margin-right: 2px;"></i>Export</button>';
-			htm += '<button class="lui-button lui-button--inverse lui-dialog__button cancel_'+layoutid+'" dim-col="10" dim-index="10" id="cancel" >Close</button>';
+			htm += '<button id="Export" class="lui-button '+(DialogluiInverse?'lui-button--inverse':'')+' lui-dialog__button export" style="'+(DialogShowExport?'':'display:none;')+'"><i class="lui-icon  lui-icon--export" style="margin-right: 2px;"></i>Export</button>';
+			htm += '<button class="lui-button '+(DialogluiInverse?'lui-button--inverse':'')+' lui-dialog__button cancel_'+layoutid+'" dim-col="10" dim-index="10" id="cancel" >Close</button>';
 			htm += '</div>';
 			htm += '</div>';
 			htm += '</div>';
@@ -547,10 +551,11 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
-				await self.backendApi.selectValues(dimCol, [dimInd], true);
+				self.backendApi.selectValues(dimCol, [dimInd], true);
 				
 				$("#comment-diloag-" + layoutid).css("left", "0");
 				$("#comment-diloag-" + layoutid).css("top", "0");
+				$("#comment-diloag-" + layoutid).css("maxHeight", height);
 				$('#Dialog-Title').html(title);
 				$("#comment-diloag-" + layoutid).slideDown("slow")//.css("display", "");
 				$(".dialog-content").css("width", width);
@@ -575,7 +580,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			$(".cancel_"+layoutid).click(function () {
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
-				await self.backendApi.selectValues(dimCol, [dimInd], true);
+				self.backendApi.selectValues(dimCol, [dimInd], true);
 				$('#comment-diloag-' + layoutid).css("display", "none");
 			});
 
