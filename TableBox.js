@@ -195,7 +195,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					dialogclassinfo = ' view_dialog_'+layoutid;
 					dialogOtherInfo = ' Dialog-Title="' + Dialogtitle + '" Dialog-width="' + width + '" Dialog-height="' + height + '" obj-id="' + objid + '" view-id="' + layoutid + '"'
 				}
-				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + dialogclassinfo +"'" + dialogOtherInfo +  "'dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
+				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + dialogclassinfo +"'" + dialogOtherInfo +  "dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
 				if (!isNaN(cell.qNum)) {
 					html += "class='numeric'";
 				}
@@ -229,19 +229,12 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					backgroundcolorHeader = (layout.DefaultHeaderStyle ? layout.HeaderBgColor : cell.backgroundcolorHeader),
 					HeaderAlignation = cell.HeaderAlignation,
 					colSpanHeader = (cell.colSpanHeader == undefined ? 1 : cell.colSpanHeader),
-					//ColWidth = (cell.ColWidth == undefined ? '' : 'width:' + cell.ColWidth + 'px;'),
 					hide = (cell.hide == true ? 'display:none;' : ''),
 					sortInd = '',
 					mesNavEnable=cell.mesNavEnable,
 					MesSheetNavigation=cell.MesSheetNavigation,
 					SheetID=(layout.enableNavigation && mesNavEnable?MesSheetNavigation:'nosel');;
-				/*
-				if (cell.qSortIndicator === 'A' || cell.qSortIndicator === "A") {
-					sortInd = "<i style='z-index: 2;' class='icon-triangle-top'><i>";
-				} else {
-					sortInd = "<i style='z-index: 2;' class='icon-triangle-bottom'><i>";
-				}*/
-				//
+
 				html += '<td style="  font-weight:600; border: 1px solid ' + BorderColor + '; color:' + txtcolorHeader + '; background:' + backgroundcolorHeader + ';" class="sortHeader" ' + ColType + '-col="' + (ColType == 'mes' ? (dimcnt + key) : key) + '" colspan="' + colSpanHeader + '"><div sheetnav="'+SheetID+'" style="'+Headercss+'padding:' + CellPadding + '; ' + hide + ' color:' + txtcolorHeader + '; background:' + backgroundcolorHeader + '; text-align:' + HeaderAlignation + '; font-size:' + headerFontSize + 'px; ' + wraptext + '">' + sortInd + cell.qFallbackTitle + enableFilter + '</div></td>';
 			} else {
 				if (ColType == 'dim') {
@@ -285,7 +278,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				customWidth = layout.customWidth,
 				html = "<table id='table_" + objid + "'" + "style='border: 0px solid #ddd; table-layout: " + (customWidth ? 'auto' : 'fixed') + "; width:" + (customWidth ? layout.tableWidth : '100%') + "; '" + "><thead>",
 				self = this,
-				//morebutton = false,
 				hypercube = layout.qHyperCube,
 				rowcount = hypercube.qDataPages[0].qMatrix.length,
 				dimCount = hypercube.qDimensionInfo.length,
@@ -303,7 +295,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				enableTotal = layout.enableTotal,
 				totalAlign = layout.totalAlign,
 				header = '',
-				//headerFontSize = (layout.headerFontSize == undefined ? '14px' : layout.headerFontSize),
 				CustomHeader = '',
 				CustomHeaderPos = 1,
 				totalHtml = '',
@@ -311,7 +302,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				BorderColor = layout.BorderColor,
 				CellPadding = layout.DataCellPadding,
 				txtcolor = (layout.DefaultHeaderStyle ? layout.DataColor : '#000'),
-				//bgcolor = (layout.DefaultHeaderStyle ? layout.DataBgColor : '#ffffff'),
 				tdfontsize = (layout.tdFontsizeshow ? layout.tdFontsize : '15');
 			//render header titles
 			header += "<tr id='thead_" + objid + "'>";
@@ -323,8 +313,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			// customHeader
 			$.each(layout.customHeader, function(key, val) {
 				$.each(val.customHeader2, function(k1, td) {
-					var //thcolspan = val.colspan,
-						colspan = td.colspan,
+					var colspan = td.colspan,
 						label = td.label;
 					var addcss = td.addcss;
 					tableth += '<th colspan="' + colspan + '" style="' + addcss + ' background:' + td.bgcolor + '; color:' + td.color + ';"><div>' + label + '</div></th>';
@@ -355,7 +344,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					FStyle = txtcolor + backgroundcolor + TCellPadding + FontSize;
 				totalHtml += (totalAlign == "2" ? "<tfoot>" : "<thead>");
 				totalHtml += "<tr id='total_top_" + objid + "'><td style='" + txtcolor + backgroundcolor + TBorderColor + "'><div style='" + FStyle + "'>Total</div></td>";
-				//colspan='"+(dimCount)+"'
 				for (var i = 0; i < (dimCount - 1); i++) {
 					totalHtml += "<td style='font-weight:600; text-align:"+layout.TotalTextAlign+"; " + txtcolor + backgroundcolor + TBorderColor + "' class='dummy'><div style='" + FStyle + "'>&nbsp;</div></td>";
 				}
@@ -431,13 +419,11 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					fixLeftCol = layout.fixLeftCol;
 				}
 				$('#table_' + objid).tableHeadFixer({
-					//'right' : fixRightCol,
 					'head': layout.fixHeader,
 					'left': fixLeftCol,
 					'foot': layout.fixFooter
 				});
 			}
-			// Fixed header end
 			// Add click functions to ".selectable" items
 			if (layout.enableSelections) {
 				$element.find(".selectable").on("click", function() {
@@ -461,13 +447,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var parent = this.parentNode;
 				if (this.hasAttribute("dim-col")) {
 					var col = parseInt(this.getAttribute("dim-col"), 10);
-					//setSortOrder(self, col);
-					//reverseOrder(self, col, 'dim');
 				}
 				if (this.hasAttribute("mes-col")) {
 					var col = parseInt(this.getAttribute("mes-col"), 10);
-					//reverseOrder(self, col, 'mes');
-					//setSortOrder(self, col);
 				}
 			});
 			if (layout.enableNavigation) {
@@ -544,8 +526,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			htm += '<div id="para-' + layoutid + '" style="height: 100px;overflow: scroll;padding: 5px;margin: 5px;border: 1px solid #ccc;"></div>';
 			htm += '<div class="lui-dialog__footer">';
 			htm += '<a target="_blank" id="download_file" >Click here to download your data file.</a>';
-			htm += '<button id="Export" class="lui-button  lui-dialog__button export" style=""><i class="lui-icon  lui-icon--export" style="margin-right: 2px;"></i>Export</button>';
-			htm += '<button class="lui-button  lui-dialog__button cancel_'+layoutid+'" >Close</button>';
+			htm += '<button id="Export" class="lui-button lui-button--inverse lui-dialog__button export" style=""><i class="lui-icon  lui-icon--export" style="margin-right: 2px;"></i>Export</button>';
+			htm += '<button class="lui-button lui-button--inverse lui-dialog__button cancel_'+layoutid+'" dim-col="10" dim-index="10" id="cancel" >Close</button>';
 			htm += '</div>';
 			htm += '</div>';
 			htm += '</div>';
@@ -562,24 +544,27 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var title =  $(this).attr("Dialog-Title");
 				var width =  $(this).attr("Dialog-width");
 				var height = $(this).attr("Dialog-height");
-				$('#download_file').hide();
+
+				var dimCol = parseInt($(this).attr("dim-col"));
+				var dimInd = parseInt($(this).attr("dim-index"));
+				await self.backendApi.selectValues(dimCol, [dimInd], true);
+				
 				$("#comment-diloag-" + layoutid).css("left", "0");
 				$("#comment-diloag-" + layoutid).css("top", "0");
 				$('#Dialog-Title').html(title);
-				$("#comment-diloag-" + layoutid).css("display", "");
+				$("#comment-diloag-" + layoutid).slideDown("slow")//.css("display", "");
 				$(".dialog-content").css("width", width);
-				$(".dialog-content").css("height", height);
 				$("#para-" + layoutid).hide();
-				//$("#cont-" + layoutid).css("height", height);
+				$('#download_file').hide();
+				$("#cont-" + layoutid).css("height", height);
+				$(".cancel_"+layoutid).attr("dim-col", dimCol);
+				$(".cancel_"+layoutid).attr("dim-index", dimInd);
 				app.getObject('cont-' + layoutid, obj).then(function (modal) {
 					qlik.resize(this);
-					console.log('qUrlModified', modal);
-					// export data excel
-					var title = modal.layout.qMeta.title;
 					$('#Export').click(function () {
+						console.log("Export clicked")
 						modal.exportData().then(function (reply) {
 							var url = (config.isSecure ? "https://" : "http://") + config.host + config.port + reply.qUrl;
-							console.log('qUrlModified', url);
 							$('#download_file').attr("href", url);
 							$('#download_file').show();
 						});
@@ -588,13 +573,13 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			});
 
 			$(".cancel_"+layoutid).click(function () {
+				var dimCol = parseInt($(this).attr("dim-col"));
+				var dimInd = parseInt($(this).attr("dim-index"));
+				await self.backendApi.selectValues(dimCol, [dimInd], true);
 				$('#comment-diloag-' + layoutid).css("display", "none");
 			});
 
-			
 			ColGrp = '';
-
-			
 			
 			return qlik.Promise.resolve();
 		}
