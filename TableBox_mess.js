@@ -1,3 +1,27 @@
+				
+				dimensionInfo.forEach(function(dimension) {
+					navTypeTest = dimension.NavigationType;
+					if (navTypeTest == 4) {
+						console.log('We have liftoff');
+						Dialogable = 'dialogable';
+						var buttonText = dimensionInfo["0"].ButtonText, 
+						dialogWidth = dimensionInfo["0"].Dialogwidth,
+						dialogHeight = dimensionInfo["0"].Dialogheight,
+						dialogMasterObject = dimensionInfo["0"].DialogMasterObject,
+						dialogShowPara = dimensionInfo["0"].ShowPara,
+						paragraph = dimensionInfo["0"].Paragraph,
+						paragraphHeight = dimensionInfo["0"].Paragraphheight,
+						layoutid = layout.qInfo.qId,
+						btn = '<div class="lui-buttongroup">',
+						htm = '',
+						ShowDialogTitle = layout.ShowDialogTitle,
+						ShowExport = layout.ShowExport,
+						ShowClose = layout.ShowClose;
+					}
+				});	
+
+
+
 define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHeadFixer", "./d3.v3.min"], function(qlik, qv,$, prop) {
 	'use strict';
 	var tableToExcel = (function() {
@@ -138,27 +162,30 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 
 	function createRows(rows, dimensionInfo, measureInfo, layout) {
 		//debugger;
-		var html = "",Rowcss=layout.Rowcss,
+		var html = "",
+			Rowcss=layout.Rowcss,
 			measure = 0,
 			wraptext = (layout.wraptext ? 'white-space: pre-wrap !important;' : ''),
 			BorderColor = layout.BorderColor,
 			CellPadding = layout.DataCellPadding;
+
 		rows.forEach(function(row) {
 			html += '<tr>';
 			row.forEach(function(cell, key) {
 				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor : cell.qAttrExps.qValues["0"].qText),
 					bgcolor = (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
 					align = (cell.qAttrExps.qValues["2"].qText == 1 ? 'left' : (cell.qAttrExps.qValues["2"].qText == 2 ? 'right' : 'center')),
-					size = (layout.tdFontsizeshow ? layout.tdFontsize : cell.qAttrExps.qValues["3"].qText),
+					size = 	 (layout.tdFontsizeshow ? layout.tdFontsize : cell.qAttrExps.qValues["3"].qText),
 					addcss = (cell.qAttrExps.qValues["4"].qText == undefined ? '' : cell.qAttrExps.qValues["4"].qText),
 					selectable = '',
 					sheetNavigation = 'nosel',
 					mesSel='',
 					urlNavigation, hide = '',
 					navType = 1,
-					SubTotal = '',
-					dialogclassinfo='',
-					dialogOtherInfo='';
+					SubTotal = ''
+					Dialogable = ''
+					;
+
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -166,6 +193,23 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					sheetNavigation = cell.qAttrExps.qValues["5"].qText;
 					urlNavigation = cell.qAttrExps.qValues["6"].qText;
 					navType = dimensionInfo["0"].NavigationType;
+					if (navType == 4) {
+						console.log('part one activated');
+						Dialogable = 'dialogable';
+						var buttonText = dimensionInfo["0"].ButtonText, 
+						dialogWidth = dimensionInfo["0"].Dialogwidth,
+						dialogHeight = dimensionInfo["0"].Dialogheight,
+						dialogMasterObject = dimensionInfo["0"].DialogMasterObject,
+						dialogShowPara = dimensionInfo["0"].ShowPara,
+						paragraph = dimensionInfo["0"].Paragraph,
+						paragraphHeight = dimensionInfo["0"].Paragraphheight,
+						layoutid = layout.qInfo.qId,
+						btn = '<div class="lui-buttongroup">',
+						htm = '',
+						ShowDialogTitle = layout.ShowDialogTitle,
+						ShowExport = layout.ShowExport,
+						ShowClose = layout.ShowClose;
+					}
 					if (sheetNavigation == 0 || sheetNavigation == '0') {
 						sheetNavigation = 'nosel';
 					} else {
@@ -184,24 +228,20 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				if (cell.qIsOtherCell) {
 					cell.qText = dimensionInfo[key].othersLabel;
 				}
-				if (navType == 4) {
-					var layoutid = layout.qInfo.qId;
-					var Dialogtitle = cell.qAttrExps.qValues["7"].qText;
-					var width  = cell.qAttrExps.qValues["8"].qText;
-					var height = cell.qAttrExps.qValues["9"].qText;
-					var objid  = dimensionInfo["0"].MasterObject;
-					dialogclassinfo = ' view_dialog_'+layoutid;
-					dialogOtherInfo = ' Dialog-Title="' + Dialogtitle + '" Dialog-width="' + width + '" Dialog-height="' + height + '" obj-id="' + objid + '" view-id="' + layoutid + '"'
-				}
-				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + dialogclassinfo +"'" + dialogOtherInfo +  "'dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
+				html += "<td mesSel='"+mesSel+"' val='" + (cell.qNum == undefined ? 0 : cell.qNum) + "' class='" + selectable + SubTotal + Dialogable + "' dim-col='" + key + "' dim-index='" + cell.qElemNumber + "' style='"+Rowcss+" padding: " + CellPadding + "; border: 1px solid " + BorderColor + "; color:" + txtcolor + "; background:" + bgcolor + "; text-align:" + align + "; font-size:" + size + "px; " + addcss + " '";
 				if (!isNaN(cell.qNum)) {
 					html += "class='numeric'";
 				}
 				if (navType == 2) {
 					html += '><a href="' + urlNavigation + '" target="_blank">' + (cell.qText == undefined ? '' : cell.qText) + '</a></td>';
 				} else if (navType == 3) {
+				//text-decoration:underline;
 					html += '><span style="" sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</span></td>';
-				} else {
+				} else if (navType == 4) {
+					console.log('part two activated');
+					html += '><button path="' + path + '" class="lui-button lui-dialog__button view_dialog_'+layoutid+'" Dialog-Title="' + buttonText + '" Dialog-width="' + dialogWidth + '" Dialog-height="' + dialogHeight + '" obj-id="' + dialogMasterObject + '" view-id="' + layoutid + '">' + buttonText + '</button>' + '</span></td>';
+				}  
+				else {
 					html += '><div sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</div></td>';
 				}
 			});
@@ -227,7 +267,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					backgroundcolorHeader = (layout.DefaultHeaderStyle ? layout.HeaderBgColor : cell.backgroundcolorHeader),
 					HeaderAlignation = cell.HeaderAlignation,
 					colSpanHeader = (cell.colSpanHeader == undefined ? 1 : cell.colSpanHeader),
-					//ColWidth = (cell.ColWidth == undefined ? '' : 'width:' + cell.ColWidth + 'px;'),
+					ColWidth = (cell.ColWidth == undefined ? '' : 'width:' + cell.ColWidth + 'px;'),
 					hide = (cell.hide == true ? 'display:none;' : ''),
 					sortInd = '',
 					mesNavEnable=cell.mesNavEnable,
@@ -251,6 +291,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 		});
 		return html;
 	}
+
 	return {
 		initialProperties: {
 			customRow: [],
@@ -272,18 +313,25 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			snapshot: false,
 			export: true,
 			exportData: true,
-			//copyValue:true
 		},
 		paint: function($element, layout) {
-			console.log(layout);
 			var objid = layout.qInfo.qId;
 			$element.attr("id", "table_container_" + objid);
 			$element.css("overflow", "scroll");
+			
+			var dialogconfig = {
+				host: window.location.hostname,
+				prefix: "/",
+				port: window.location.port,
+				isSecure: window.location.protocol === "https:"
+			};
+			
 			var app= qlik.currApp(),
+				sheetId = qlik.navigation.getCurrentSheetId().sheetId,
 				customWidth = layout.customWidth,
 				html = "<table id='table_" + objid + "'" + "style='border: 0px solid #ddd; table-layout: " + (customWidth ? 'auto' : 'fixed') + "; width:" + (customWidth ? layout.tableWidth : '100%') + "; '" + "><thead>",
 				self = this,
-				//morebutton = false,
+				morebutton = false,
 				hypercube = layout.qHyperCube,
 				rowcount = hypercube.qDataPages[0].qMatrix.length,
 				dimCount = hypercube.qDimensionInfo.length,
@@ -301,7 +349,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				enableTotal = layout.enableTotal,
 				totalAlign = layout.totalAlign,
 				header = '',
-				//headerFontSize = (layout.headerFontSize == undefined ? '14px' : layout.headerFontSize),
 				CustomHeader = '',
 				CustomHeaderPos = 1,
 				totalHtml = '',
@@ -309,7 +356,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				BorderColor = layout.BorderColor,
 				CellPadding = layout.DataCellPadding,
 				txtcolor = (layout.DefaultHeaderStyle ? layout.DataColor : '#000'),
-				//bgcolor = (layout.DefaultHeaderStyle ? layout.DataBgColor : '#ffffff'),
+				bgcolor = (layout.DefaultHeaderStyle ? layout.DataBgColor : '#ffffff'),
 				tdfontsize = (layout.tdFontsizeshow ? layout.tdFontsize : '15');
 			//render header titles
 			header += "<tr id='thead_" + objid + "'>";
@@ -321,7 +368,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			// customHeader
 			$.each(layout.customHeader, function(key, val) {
 				$.each(val.customHeader2, function(k1, td) {
-					var //thcolspan = val.colspan,
+					var thcolspan = val.colspan,
 						colspan = td.colspan,
 						label = td.label;
 					var addcss = td.addcss;
@@ -353,7 +400,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					FStyle = txtcolor + backgroundcolor + TCellPadding + FontSize;
 				totalHtml += (totalAlign == "2" ? "<tfoot>" : "<thead>");
 				totalHtml += "<tr id='total_top_" + objid + "'><td style='" + txtcolor + backgroundcolor + TBorderColor + "'><div style='" + FStyle + "'>Total</div></td>";
-				//colspan='"+(dimCount)+"'
 				for (var i = 0; i < (dimCount - 1); i++) {
 					totalHtml += "<td style='font-weight:600; text-align:"+layout.TotalTextAlign+"; " + txtcolor + backgroundcolor + TBorderColor + "' class='dummy'><div style='" + FStyle + "'>&nbsp;</div></td>";
 				}
@@ -370,14 +416,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				html += (customWidth ? "<colgroup id='colgroup_" + objid + "'>" + ColGrp + "</colgroup>" : '');
 			}
 			html += "</tbody></table>";
-			$element.html("<button class='lui-button' id='export_" + objid + "' style='float: right;margin-bottom: 2px;'><span class='lui-icon lui-icon--export'></span></button>" + html);
-			if (layout.enableExport) {
-				$("#export_" + objid).show().click(function() {
-					tableToExcel('table_' + objid, 'W3C Example Table');
-				});
-			} else {
-				$("#export_" + objid).hide();
-			}
+			
 			// Custom Row
 			$.each(layout.customRow, function(k, v) {
 				index = v.index - 1;
@@ -419,7 +458,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					gen_sums('table_' + objid, format, xtraCalc, xtraCalcStr);
 				}
 				tabletd = '';
-
 			});
 			//Fixed Right or Left or header or footer
 			if (layout.fixHeader || layout.fixFooter) {
@@ -429,12 +467,61 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					fixLeftCol = layout.fixLeftCol;
 				}
 				$('#table_' + objid).tableHeadFixer({
-					//'right' : fixRightCol,
 					'head': layout.fixHeader,
 					'left': fixLeftCol,
 					'foot': layout.fixFooter
 				});
 			}
+			// Fixed header end
+			// Add click functions to ".selectable" items
+			$(".cancel_"+layoutid).click(function () {
+				$('#comment-diloag-' + layoutid).css("display", "none");
+			});
+
+			$element.find(".dialogable").on("click", function() {
+				// Get the dimension column number
+				var dimCol = parseInt(this.getAttribute("dim-col"));
+				// Get the dimension value index
+				var dimInd = parseInt(this.getAttribute("dim-index"));
+				self.backendApi.selectValues(dimCol, [dimInd], true);
+				// lock Measure
+				$("#table_" + objid + " td.selectableMes").each(function(k, v) {
+					$(v).addClass("cell-locked");
+				});
+				var obj = $(this).attr("obj-id");
+				var title = $(this).attr("Dialog-Title");
+				var width = $(this).attr("Dialog-width");
+				var height = $(this).attr("Dialog-height");
+				var path = $(this).attr("path");
+				var ShowPara = layout.listItems[path].ShowPara;
+				var Paragraph = layout.listItems[path].Paragraph;
+				var Paragraphheight = layout.listItems[path].Paragraphheight;
+				$('#download_file').hide();
+				$("#comment-diloag-" + layoutid).css("left", "0");
+				$("#comment-diloag-" + layoutid).css("top", "0");
+				$('#Dialog-Title').html(title);
+				$("#comment-diloag-" + layoutid).css("display", "");
+				$(".dialog-content").css("width", width);
+				$("#cont-" + layoutid).css("height", height);
+				if (ShowPara == "false" || ShowPara === false) {
+					$("#para-" + layoutid).hide();
+				} else {
+					$("#para-" + layoutid).show().css("height",Paragraphheight).html(Paragraph);
+				}
+				app.getObject('cont-' + layoutid, obj).then(function (modal) {
+					qlik.resize(this);
+					// export data excel
+					var title = modal.layout.qMeta.title;
+					$('#Export').click(function () {
+						modal.exportData().then(function (reply) {
+							var url = (config.isSecure ? "https://" : "http://") + config.host + config.port + reply.qUrl;
+							console.log('qUrlModified', url);
+							$('#download_file').attr("href", url);
+							$('#download_file').show();
+						});
+					});
+				});
+			});
 			// Fixed header end
 			// Add click functions to ".selectable" items
 			if (layout.enableSelections) {
@@ -459,13 +546,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var parent = this.parentNode;
 				if (this.hasAttribute("dim-col")) {
 					var col = parseInt(this.getAttribute("dim-col"), 10);
-					//setSortOrder(self, col);
-					//reverseOrder(self, col, 'dim');
 				}
 				if (this.hasAttribute("mes-col")) {
 					var col = parseInt(this.getAttribute("mes-col"), 10);
-					//reverseOrder(self, col, 'mes');
-					//setSortOrder(self, col);
 				}
 			});
 			if (layout.enableNavigation) {
@@ -521,79 +604,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					}
 				}
 			});
-		
-			var config = {
-				host: window.location.hostname,
-				prefix: "/",
-				port: window.location.port,
-				isSecure: window.location.protocol === "https:"
-			};
-			
-			var htm = '',
-			layoutid = layout.qInfo.qId;
-			// add html
-			htm += '<div id="comment-diloag-' + layoutid + '" style="display: none;">';
-			htm += '<div class="lui-dialog dialog-content lui-dialog--inverse"  style="">';
-			htm += '<div class="lui-dialog__header" style="">';
-			htm += '<div class="lui-dialog__title" id="Dialog-Title"></div>';
-			htm += '</div>';
-			htm += '<div class="lui-dialog__body2" id="cont-' + layoutid + '">';
-			htm += '</div>';
-			htm += '<div id="para-' + layoutid + '" style="height: 100px;overflow: scroll;padding: 5px;margin: 5px;border: 1px solid #ccc;"></div>';
-			htm += '<div class="lui-dialog__footer">';
-			htm += '<a target="_blank" id="download_file" >Click here to download your data file.</a>';
-			htm += '<button id="Export" class="lui-button  lui-dialog__button export" style=""><i class="lui-icon  lui-icon--export" style="margin-right: 2px;"></i>Export</button>';
-			htm += '<button class="lui-button  lui-dialog__button cancel_'+layoutid+'" >Close</button>';
-			htm += '</div>';
-			htm += '</div>';
-			htm += '</div>';
-			
-			if (!document.getElementById('comment-diloag-'+layoutid)) {
-				$('#grid-wrap').append(htm);
-				$(function () {
-					$("#comment-diloag-" + layoutid).draggable({ handle: "div.lui-dialog__header" });
-				});
-			}
-
-			$(".view_dialog_"+layoutid).click(function () {
-				var obj =    $(this).attr("obj-id");
-				var title =  $(this).attr("Dialog-Title");
-				var width =  $(this).attr("Dialog-width");
-				var height = $(this).attr("Dialog-height");
-				$('#download_file').hide();
-				$("#comment-diloag-" + layoutid).css("left", "0");
-				$("#comment-diloag-" + layoutid).css("top", "0");
-				$('#Dialog-Title').html(title);
-				$("#comment-diloag-" + layoutid).css("display", "");
-				$(".dialog-content").css("width", width);
-				$(".dialog-content").css("height", width);
-				$("#para-" + layoutid).hide();
-				//$("#cont-" + layoutid).css("height", height);
-				app.getObject('cont-' + layoutid, obj).then(function (modal) {
-					qlik.resize(this);
-					console.log('qUrlModified', modal);
-					// export data excel
-					var title = modal.layout.qMeta.title;
-					$('#Export').click(function () {
-						modal.exportData().then(function (reply) {
-							var url = (config.isSecure ? "https://" : "http://") + config.host + config.port + reply.qUrl;
-							console.log('qUrlModified', url);
-							$('#download_file').attr("href", url);
-							$('#download_file').show();
-						});
-					});
-				});
-			});
-
-			$(".cancel_"+layoutid).click(function () {
-				$('#comment-diloag-' + layoutid).css("display", "none");
-			});
-
 			
 			ColGrp = '';
 
-			
-			
 			return qlik.Promise.resolve();
 		}
 	};

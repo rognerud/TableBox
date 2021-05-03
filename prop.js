@@ -278,47 +278,37 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						}
 					},
 					DialogTitle: {
-						ref: "qDef.dialogtitle",
-						label: "Dialog Title",
+						ref: "qAttributeExpressions.7.qExpression",
 						type: "string",
-						defaultValue: "Title",
-						expression: "optional",
-						show: function(d) {
-							return d.qDef.NavigationType == 4;
-						}
-					},
-					ButtonText: {
-						ref: "qDef.buttonText",
-						label: "Button Text",
-						type: "string",
-						defaultValue: "View Dialog",
-						expression: "optional",
+						label: "DialogTitle",
+						component: "expression",
+						defaultValue: "Test",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
 					},
 					Dialogwidth: {
-						ref: "qDef.dialogWidth",
-						label: "Dialog Width (write px or %)",
+						ref: "qAttributeExpressions.8.qExpression",
 						type: "string",
+						label: "Dialog Width (write px or %)",
+						component: "expression",
 						defaultValue: "50%",
-						expression: "optional",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
 					},
 					Dialogheight: {
-						ref: "qDef.dialogheight",
-						label: "Dialog Height (write px or %)",
+						ref: "qAttributeExpressions.9.qExpression",
 						type: "string",
+						label: "Dialog Height (write px or %)",
+						component: "expression",
 						defaultValue: "300px",
-						expression: "optional",
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
 						}
 					},
 					DialogMasterObject: {
-						ref: "qDef.dialogMasterObject",
+						ref: "qDef.MasterObject",
 						type: "string",
 						component: "dropdown",
 						label: "Master Object",
@@ -329,36 +319,6 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 						},
 						show: function(d) {
 							return d.qDef.NavigationType == 4;
-						}
-					},
-					ShowPara: {
-						ref: "qDef.dialogShowPara",
-						type: "boolean",
-						label: "Add HTML Paragraph",
-						defaultValue: false,
-						show: function(d) {
-							return d.qDef.NavigationType == 4;
-						}
-					},
-					Paragraph: {
-						ref: "qDef.paragraph",
-						label: "HTML Paragraph",
-						component: "textarea",
-						rows: 7,
-						maxlength: 100000,
-						expression: "optional",
-						show: function (d) {
-							return d.DialogShowPara;
-						}
-					},
-					Paragraphheight: {
-						ref: "qDef.paragraphHeight",
-						label: "Paragraph Height (write px or %)",
-						type: "string",
-						defaultValue: "300",
-						expression: "optional",
-						show: function (d) {
-							return d.DialogShowPara;
 						}
 					},
 					hide: hide
