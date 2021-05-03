@@ -156,6 +156,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					mesSel='',
 					urlNavigation, hide = '',
 					navType = 1,
+					GoodnavType = 1,
 					SubTotal = '',
 					dialogclassinfo='',
 					dialogOtherInfo='';
@@ -166,6 +167,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					sheetNavigation = cell.qAttrExps.qValues["5"].qText;
 					urlNavigation = cell.qAttrExps.qValues["6"].qText;
 					navType = dimensionInfo["0"].NavigationType;
+					GoodnavType = dimensionInfo[key].NavigationType;
 					if (sheetNavigation == 0 || sheetNavigation == '0') {
 						sheetNavigation = 'nosel';
 					} else {
@@ -184,7 +186,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				if (cell.qIsOtherCell) {
 					cell.qText = dimensionInfo[key].othersLabel;
 				}
-				if (navType == 4) {
+				if (GoodnavType == 4) {
 					var layoutid = layout.qInfo.qId;
 					var Dialogtitle = cell.qAttrExps.qValues["7"].qText;
 					var width  = cell.qAttrExps.qValues["8"].qText;
@@ -566,7 +568,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				$('#Dialog-Title').html(title);
 				$("#comment-diloag-" + layoutid).css("display", "");
 				$(".dialog-content").css("width", width);
-				$(".dialog-content").css("height", width);
+				$(".dialog-content").css("height", height);
 				$("#para-" + layoutid).hide();
 				//$("#cont-" + layoutid).css("height", height);
 				app.getObject('cont-' + layoutid, obj).then(function (modal) {
