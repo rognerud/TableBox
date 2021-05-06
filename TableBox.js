@@ -186,7 +186,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				if (cell.qIsOtherCell) {
 					cell.qText = dimensionInfo[key].othersLabel;
 				}
-				if (navType == 4) {
+				if (GoodnavType == 4) {
 					var layoutid = layout.qInfo.qId;
 					var Dialogtitle = cell.qAttrExps.qValues["7"].qText;
 					var width  = cell.qAttrExps.qValues["8"].qText;
@@ -203,6 +203,8 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					html += '><a href="' + urlNavigation + '" target="_blank">' + (cell.qText == undefined ? '' : cell.qText) + '</a></td>';
 				} else if (navType == 3) {
 					html += '><span style="" sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</span></td>';
+				} else if (GoodnavType == 4) {
+					html += '><span class="lui-icon lui-icon--expand" aria-hidden="true"></span></td>';
 				} else {
 					html += '><div sheetnav="' + sheetNavigation + '">' + (cell.qText == undefined ? '' : cell.qText) + '</div></td>';
 				}

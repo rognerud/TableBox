@@ -7,6 +7,14 @@
     color: #fff !important;
     }
 
+.qv-object-TableBox span.lui-icon{
+    opacity: 0;
+    }
+
+.qv-object-TableBox tr:hover span.lui-icon {
+    opacity: 100;
+    }
+
 .qv-object-TableBox td.selected {
     background-color: #52cc52 !important;
     border-bottom: 1px solid #baebba !important;
@@ -24,3 +32,4 @@
 .qv-object-X-Popup ~ .qv-object-nav > a{
 	display:none;
 }
+
