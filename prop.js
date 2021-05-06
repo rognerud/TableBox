@@ -14,14 +14,14 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 			ref: "qAttributeExpressions.0.qExpression",
 			label: "Text Color",
 			component: "expression",
-			defaultValue: "='#000'"
+			defaultValue: "='#C3C3C3'"
 		},
 		backgroundcolor = {
 			type: "string",
 			ref: "qAttributeExpressions.1.qExpression",
 			label: "Background Color",
 			component: "expression",
-			defaultValue: "='white'"
+			defaultValue: "='#2A2A2A'"
 		},
 		textalign = {
 			type: "string",
@@ -74,14 +74,14 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 			ref: "qDef.backgroundcolorHeader",
 			label: "Header Background Color",
 			expression: "always",
-			defaultValue: "='white'"
+			defaultValue: "='#2A2A2A'"
 		},
 		txtcolorHeader = {
 			type: "string",
 			ref: "qDef.txtcolorHeader",
 			label: "Header Text Color",
 			expression: "always",
-			defaultValue: "='#000'"
+			defaultValue: "='#C3C3C4'"
 		},
 		colSpanHeader = {
 			type: "integer",
@@ -501,7 +501,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								label: "Border Color",
 								type: "string",
 								ref: "BorderColor",
-								defaultValue: "#ffffff"
+								defaultValue: "#2A2A2A"
 							},
 							headerFontSizeshow: {
 								type: "boolean",
@@ -552,7 +552,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								label: "Header Color",
 								type: "string",
 								ref: "HeaderColor",
-								defaultValue: "#fff",
+								defaultValue: "#C3C3C3",
 								show: function(d) {
 									return d.DefaultHeaderStyle;
 								}
@@ -561,7 +561,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								label: "Header Background Color",
 								type: "string",
 								ref: "HeaderBgColor",
-								defaultValue: "#1d96b2",
+								defaultValue: "#2A2A2A",
 								show: function(d) {
 									return d.DefaultHeaderStyle;
 								}
@@ -602,7 +602,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								label: "Total Background Color",
 								type: "string",
 								ref: "TotalBgColor",
-								defaultValue: "#1d96b2",
+								defaultValue: "#2A2A2A",
 								show: function(d) {
 									return d.DefaultTotalStyle;
 								}

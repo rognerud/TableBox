@@ -546,6 +546,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var title =  $(this).attr("Dialog-Title");
 				var width =  $(this).attr("Dialog-width");
 				var height = $(this).attr("Dialog-height");
+				var heightadjusted = Math.round(window.innerHeight * (height/100));
 
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
@@ -558,7 +559,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				$(".dialog-content").css("width", width);
 				$("#para-" + layoutid).hide();
 				$('#download_file').hide();
-				$("#cont-" + layoutid).css("height", height);
+				$("#cont-" + layoutid).css("height", heightadjusted);
 				$(".cancel_"+layoutid).attr("dim-col", dimCol);
 				$(".cancel_"+layoutid).attr("dim-index", dimInd);
 				app.getObject('cont-' + layoutid, obj).then(function (modal) {

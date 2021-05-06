@@ -3,6 +3,10 @@
 	text-decoration: underline;
 }
 
+.qv-object-TableBox tr:hover td {
+    color: #fff !important;
+    }
+
 .qv-object-TableBox td.selected {
     background-color: #52cc52 !important;
     border-bottom: 1px solid #baebba !important;
