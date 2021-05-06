@@ -23,6 +23,13 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 			component: "expression",
 			defaultValue: "='#2A2A2A'"
 		},
+		rowaltbackgroundcolor = {
+			type: "string",
+			ref: "qAttributeExpressions.13.qExpression",
+			label: "Alternate Background Color",
+			component: "expression",
+			defaultValue: "='#2C2C2C'"
+		},
 		textalign = {
 			type: "string",
 			component: "dropdown",
@@ -176,16 +183,16 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 				return d.fixHeader || d.fixFooter;
 			}
 		},
-		fixRightCol = {
-			type: "integer",
-			ref: "fixRightCol",
-			label: "Fixed Right Column",
-			expression: "optional",
-			defaultValue: "1",
-			show: function(d) {
-				return d.fixRight;
-			}
-		},
+		// fixRightCol = {
+		// 	type: "integer",
+		// 	ref: "fixRightCol",
+		// 	label: "Fixed Right Column",
+		// 	expression: "optional",
+		// 	defaultValue: "1",
+		// 	show: function(d) {
+		// 		return d.fixRight;
+		// 	}
+		// },
 		fixLeft = {
 			type: "boolean",
 			component: "switch",
@@ -233,6 +240,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					ColWidth: ColWidth,
 					textcolor: textcolor,
 					backgroundcolor: backgroundcolor,
+					altbackgroundcolor: rowaltbackgroundcolor,
 					textalign: textalign,
 					textsize: textsize,
 					Addcss: Addcss,
@@ -700,6 +708,15 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 								label: "Data Background Color",
 								type: "string",
 								ref: "DataBgColor",
+								defaultValue: "#fff",
+								show: function(d) {
+									return d.DefaultDataStyle;
+								}
+							},
+							AltDataBgColor: {
+								label: "Alternate Data Background Color",
+								type: "string",
+								ref: "AltDataBgColor",
 								defaultValue: "#fff",
 								show: function(d) {
 									return d.DefaultDataStyle;

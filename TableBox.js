@@ -88,7 +88,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 						break;
 					}
 					sub_cols[j].innerHTML = fFormat(eval(x_cols[j] + xtraCalc[j])) + (xtraCalcStr[j] == undefined ? '' : xtraCalcStr[j]);
-					//sub_cols[j].innerHTML = formatNumber(x_cols[j].toFixed(decimal)*((format=='%,1' || format=='%,2')?100:1));
 					t_cols[j] += x_cols[j]; // reset to 0 for subtotal
 					x_cols[j] = 0;
 				}
@@ -143,11 +142,14 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			wraptext = (layout.wraptext ? 'white-space: pre-wrap !important;' : ''),
 			BorderColor = layout.BorderColor,
 			CellPadding = layout.DataCellPadding;
-		rows.forEach(function(row) {
+		rows.forEach(function(row, index) {
 			html += '<tr>';
+			console.log(row)
+			console.log(index)
 			row.forEach(function(cell, key) {
 				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor : cell.qAttrExps.qValues["0"].qText),
 					bgcolor = (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
+					altbgcolor = layout.AltDataBgColor,
 					align = (cell.qAttrExps.qValues["2"].qText == 1 ? 'left' : (cell.qAttrExps.qValues["2"].qText == 2 ? 'right' : 'center')),
 					size = (layout.tdFontsizeshow ? layout.tdFontsize : cell.qAttrExps.qValues["3"].qText),
 					addcss = (cell.qAttrExps.qValues["4"].qText == undefined ? '' : cell.qAttrExps.qValues["4"].qText),
@@ -160,6 +162,9 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					SubTotal = '',
 					dialogclassinfo='',
 					dialogOtherInfo='';
+				
+				if(index%2 == 0) 
+					bgcolor = altbgcolor;
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -480,7 +485,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 							field=b[0],
 							value=b[1].split(':');
 						app.field(field).selectValues(value, true, true);
-						console.log(field,value);
 					});
 					
 				});
@@ -549,7 +553,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var width =  $(this).attr("Dialog-width");
 				var height = $(this).attr("Dialog-height");
 				var heightadjusted = Math.round(window.innerHeight * (height/100));
-				console.log(obj)
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
 				//self.backendApi.selectValues(dimCol, [dimInd], true);
@@ -567,9 +570,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				$(".cancel_"+layoutid).attr("dim-index", dimInd);
 				app.getObject('cont-' + layoutid, obj).then(function (modal) {
 					qlik.resize(this);
-					console.log(this)
 					$('#Export').click(function () {
-						console.log("Export clicked")
 						modal.exportData().then(function (reply) {
 							var url = (config.isSecure ? "https://" : "http://") + config.host + config.port + reply.qUrl;
 							$('#download_file').attr("href", url);
@@ -580,10 +581,10 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			});
 
 			$(".cancel_"+layoutid).click(function () {
+				$('#comment-diloag-' + layoutid).css("display", "none");
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
 				self.backendApi.selectValues(dimCol, [dimInd], true);
-				$('#comment-diloag-' + layoutid).css("display", "none");
 			});
 
 			ColGrp = '';
