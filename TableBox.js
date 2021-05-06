@@ -186,7 +186,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				if (cell.qIsOtherCell) {
 					cell.qText = dimensionInfo[key].othersLabel;
 				}
-				if (GoodnavType == 4) {
+				if (navType == 4) {
 					var layoutid = layout.qInfo.qId;
 					var Dialogtitle = cell.qAttrExps.qValues["7"].qText;
 					var width  = cell.qAttrExps.qValues["8"].qText;
@@ -285,7 +285,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				colcount = dimCount + mesCount,
 				column = hypercube.qSize.qcx,
 				totalrows = hypercube.qSize.qcy,
-				pageheight = Math.floor(10000 / column),
+				pageheight = Math.floor(20000 / column),
 				numberOfPages = Math.ceil(totalrows / pageheight),
 				index,
 				colspan,
@@ -547,9 +547,10 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				var width =  $(this).attr("Dialog-width");
 				var height = $(this).attr("Dialog-height");
 				var heightadjusted = Math.round(window.innerHeight * (height/100));
-
+				console.log(obj)
 				var dimCol = parseInt($(this).attr("dim-col"));
 				var dimInd = parseInt($(this).attr("dim-index"));
+				//self.backendApi.selectValues(dimCol, [dimInd], true);
 				self.backendApi.selectValues(dimCol, [dimInd], true);
 				
 				$("#comment-diloag-" + layoutid).css("left", "0");
@@ -564,6 +565,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 				$(".cancel_"+layoutid).attr("dim-index", dimInd);
 				app.getObject('cont-' + layoutid, obj).then(function (modal) {
 					qlik.resize(this);
+					console.log(this)
 					$('#Export').click(function () {
 						console.log("Export clicked")
 						modal.exportData().then(function (reply) {
