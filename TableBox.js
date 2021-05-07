@@ -231,7 +231,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 		Info.forEach(function(cell, key) {
 			var verify = (ColType == 'dim' ? (cell.qFallbackTitle != undefined) : (cell.qFallbackTitle != undefined));
 			if (verify) {
-				ColGrp += '<col style=" width:' + cell.ColWidth + 'px;"></col>';
+				ColGrp += '<col style=" width:' + cell.ColWidth + '%;"></col>';
 				var txtcolorHeader = (layout.DefaultHeaderStyle ? layout.HeaderColor : cell.txtcolorHeader),
 					backgroundcolorHeader = (layout.DefaultHeaderStyle ? layout.HeaderBgColor : cell.backgroundcolorHeader),
 					HeaderAlignation = cell.HeaderAlignation,
