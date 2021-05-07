@@ -144,8 +144,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			CellPadding = layout.DataCellPadding;
 		rows.forEach(function(row, index) {
 			html += '<tr>';
-			console.log(row)
-			console.log(index)
 			row.forEach(function(cell, key) {
 				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor : cell.qAttrExps.qValues["0"].qText),
 					bgcolor = (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),

@@ -33,3 +33,20 @@
 	display:none;
 }
 
+::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+	background-color: #2e2e2e;
+}
+
+::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #2e2e2e;
+}
+
+::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #c3c3c3;
+}
