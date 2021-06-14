@@ -96,24 +96,21 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 		rows.forEach(function(row) {
 			html += '<tr>';
 			row.forEach(function(cell, key) {
-				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor   : cell.qAttrExps.qValues["0"].qText),
-					bgcolor =  (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
-					//altbgcolor = layout.AltDataBgColor,
+				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor : cell.qAttrExps.qValues["0"].qText),
+					bgcolor = (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
 					align = (cell.qAttrExps.qValues["2"].qText == 1 ? 'left' : (cell.qAttrExps.qValues["2"].qText == 2 ? 'right' : 'center')),
 					size = (layout.tdFontsizeshow ? layout.tdFontsize : cell.qAttrExps.qValues["3"].qText),
 					addcss = (cell.qAttrExps.qValues["4"].qText == undefined ? '' : cell.qAttrExps.qValues["4"].qText),
 					selectable = '',
 					sheetNavigation = 'nosel',
 					mesSel='',
-					urlNavigation,
+					urlNavigation, hide = '',
 					navType = 1,
 					GoodnavType = 1,
 					SubTotal = '',
 					dialogclassinfo='',
 					dialogOtherInfo='';
 				
-				//if(index%2 == 0) 
-				//	bgcolor = altbgcolor;
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -398,7 +395,15 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					});
 				});
 			}
-
+			$element.find('.sortHeader').on('click', function() {
+				var parent = this.parentNode;
+				if (this.hasAttribute("dim-col")) {
+					var col = parseInt(this.getAttribute("dim-col"), 10);
+				}
+				if (this.hasAttribute("mes-col")) {
+					var col = parseInt(this.getAttribute("mes-col"), 10);
+				}
+			});
 			if (layout.enableNavigation) {
 				$('td span').click(function() {
 					var val = $(this).attr('sheetnav');

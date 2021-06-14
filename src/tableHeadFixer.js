@@ -93,21 +93,12 @@
 			// Set table left column fixed
 			function fixLeft() {
 				var table = $(settings.table);
-				// var fixColumn = settings.left;
 				settings.leftColumns = $();
 				var tr = table.find("> thead > tr, > tbody > tr, > tfoot > tr");
 				tr.each(function(k, row) {
 					solverLeftColspan(row, function(cell) {
 						settings.leftColumns = settings.leftColumns.add(cell);
 					});
-					// var inc = 1;
-					// for(var i = 1; i <= fixColumn; i = i + inc) {
-					// 	var nth = inc > 1 ? i - 1 : i;
-					// 	var cell = $(row).find("*:nth-child(" + nth + ")");
-					// 	var colspan = cell.prop("colspan");
-					// 	settings.leftColumns = settings.leftColumns.add(cell);
-					// 	inc = colspan;
-					// }
 				});
 				var column = settings.leftColumns;
 				column.each(function(k, cell) {
@@ -121,7 +112,6 @@
 			// Set table right column fixed
 			function fixRight() {
 				var table = $(settings.table);
-				var fixColumn = settings.right;
 				settings.rightColumns = $();
 				var tr_head = table.find('> thead').find("> tr");
 				var tr_body = table.find('> tbody').find("> tr");
@@ -164,16 +154,6 @@
 				});
 			}
 			
-			function setBorderTop(elements) {
-				elements.each(function(k, element) {
-					var element = $(element);
-					var parent = $(element).parent();
-					var elementBorderTop = element.css("border-top");
-					var parentBorderTop = parent.css("border-top");
-					element.css("border-top", parentBorderTop);
-				});
-			}
-
 			function solverLeftColspan(row, action) {
 				var fixColumn = settings.left;
 				var inc = 1;
