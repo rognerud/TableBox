@@ -6,7 +6,7 @@ define(['qlik', 'qvangular'], function(qlik, qv) {
     var Promise = qv.getService('$q');
 
     return function() {
-        return new Promise(function(resolve, reject) {
+        return new Promise(function(resolve) {
             var app = qlik.currApp();
             app.getList('masterobject').then(function(model) {
                 // Close the model to prevent any updates.

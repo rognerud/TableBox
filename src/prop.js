@@ -23,13 +23,6 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 			component: "expression",
 			defaultValue: "='#2A2A2A'"
 		},
-		rowaltbackgroundcolor = {
-			type: "string",
-			ref: "qAttributeExpressions.13.qExpression",
-			label: "Alternate Background Color",
-			component: "expression",
-			defaultValue: "='#2C2C2C'"
-		},
 		textalign = {
 			type: "string",
 			component: "dropdown",
