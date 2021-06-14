@@ -26,41 +26,6 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 		excludedDim = 0,
 		excludedMes = 0;
 
-	function checkValue(value, arr) {
-		var status = -1;
-		for (var i = 0; i < arr.length; i++) {
-			var name = arr[i].name;
-			if (name == value) {
-				status = i;
-				break;
-			}
-		}
-		return status;
-	}
-	/**
-	 * Set column to be first in sort order
-	 * @param self The extension
-	 * @param col Column number, starting with 0
-	 */
-	function setSortOrder(self, col) {
-		//set this column first
-		var sortorder = [col];
-		//append the other columns in the same order
-		self.backendApi.model.layout.qHyperCube.qEffectiveInterColumnSortOrder.forEach(function(val) {
-			if (val !== sortorder[0]) {
-				sortorder.push(val);
-			}
-		});
-		self.backendApi.applyPatches([{
-			'qPath': '/qHyperCubeDef/qInterColumnSortOrder',
-			'qOp': 'replace',
-			'qValue': '[' + sortorder.join(',') + ']'
-		}], true);
-	}
-	/* run through and sum, subtotal and total in the cols */
-	function formatNumber(num) {
-		return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
-	}
 
 	function gen_sums(table_id, format, xtraCalc, xtraCalcStr) {
 		var rows = $("#" + table_id + " tr");
@@ -119,21 +84,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			total_cols[i].innerHTML = t_cols[i];
 		}
 	}
-	/**
-	 * Reverse sort order for column
-	 * @param self The extension
-	 * @param col The column number, starting with 0
-	 */
-	function reverseOrder(self, col, type) {
-		var hypercube = self.backendApi.model.layout.qHyperCube;
-		var dimcnt = hypercube.qDimensionInfo.length;
-		var reversesort = (col < dimcnt ? hypercube.qDimensionInfo[col].qReverseSort : hypercube.qMeasureInfo[col - dimcnt].qReverseSort);
-		self.backendApi.applyPatches([{
-			'qPath': '/qHyperCubeDef/' + (col < dimcnt ? 'qDimensions/' + col : 'qMeasures/' + (col - dimcnt)) + '/qDef/qReverseSort',
-			'qOp': 'replace',
-			'qValue': (!reversesort).toString()
-		}], true);
-	}
+
 
 	function createRows(rows, dimensionInfo, measureInfo, layout) {
 		//debugger;
@@ -142,27 +93,27 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			wraptext = (layout.wraptext ? 'white-space: pre-wrap !important;' : ''),
 			BorderColor = layout.BorderColor,
 			CellPadding = layout.DataCellPadding;
-		rows.forEach(function(row, index) {
+		rows.forEach(function(row) {
 			html += '<tr>';
 			row.forEach(function(cell, key) {
-				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor : cell.qAttrExps.qValues["0"].qText),
-					bgcolor = (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
-					altbgcolor = layout.AltDataBgColor,
+				var txtcolor = (layout.DefaultDataStyle ? layout.DataColor   : cell.qAttrExps.qValues["0"].qText),
+					bgcolor =  (layout.DefaultDataStyle ? layout.DataBgColor : cell.qAttrExps.qValues["1"].qText),
+					//altbgcolor = layout.AltDataBgColor,
 					align = (cell.qAttrExps.qValues["2"].qText == 1 ? 'left' : (cell.qAttrExps.qValues["2"].qText == 2 ? 'right' : 'center')),
 					size = (layout.tdFontsizeshow ? layout.tdFontsize : cell.qAttrExps.qValues["3"].qText),
 					addcss = (cell.qAttrExps.qValues["4"].qText == undefined ? '' : cell.qAttrExps.qValues["4"].qText),
 					selectable = '',
 					sheetNavigation = 'nosel',
 					mesSel='',
-					urlNavigation, hide = '',
+					urlNavigation,
 					navType = 1,
 					GoodnavType = 1,
 					SubTotal = '',
 					dialogclassinfo='',
 					dialogOtherInfo='';
 				
-				if(index%2 == 0) 
-					bgcolor = altbgcolor;
+				//if(index%2 == 0) 
+				//	bgcolor = altbgcolor;
 				// wraptext to addcss
 				addcss += wraptext;
 				if (key < (dimensionInfo.length - excludedDim)) {
@@ -418,8 +369,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 			});
 			//Fixed Right or Left or header or footer
 			if (layout.fixHeader || layout.fixFooter) {
-				var fixRightCol = 0,
-					fixLeftCol = 0;
+				var fixLeftCol = 0;
 				if (layout.fixLeft) {
 					fixLeftCol = layout.fixLeftCol;
 				}
@@ -448,15 +398,7 @@ define(["qlik", "qvangular", "jquery", "./prop", "css!./style.css", "./tableHead
 					});
 				});
 			}
-			$element.find('.sortHeader').on('click', function() {
-				var parent = this.parentNode;
-				if (this.hasAttribute("dim-col")) {
-					var col = parseInt(this.getAttribute("dim-col"), 10);
-				}
-				if (this.hasAttribute("mes-col")) {
-					var col = parseInt(this.getAttribute("mes-col"), 10);
-				}
-			});
+
 			if (layout.enableNavigation) {
 				$('td span').click(function() {
 					var val = $(this).attr('sheetnav');

@@ -1,231 +1,212 @@
 define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $) {
 	var colorInfo = {
-			label: "Add all the below as string(='color | bdcolor | textalign | header bgcolor | header color')",
-			component: "text"
-		},
-		ColWidth = {
-			type: "integer",
-			ref: "qDef.ColWidth",
-			label: "Column Width",
-			defaultValue: 100
-		},
-		textcolor = {
-			type: "string",
-			ref: "qAttributeExpressions.0.qExpression",
-			label: "Text Color",
-			component: "expression",
-			defaultValue: "='#C3C3C3'"
-		},
-		backgroundcolor = {
-			type: "string",
-			ref: "qAttributeExpressions.1.qExpression",
-			label: "Background Color",
-			component: "expression",
-			defaultValue: "='#2A2A2A'"
-		},
-		rowaltbackgroundcolor = {
-			type: "string",
-			ref: "qAttributeExpressions.13.qExpression",
-			label: "Alternate Background Color",
-			component: "expression",
-			defaultValue: "='#2C2C2C'"
-		},
-		textalign = {
-			type: "string",
-			component: "dropdown",
-			label: "Text Align",
-			ref: "qAttributeExpressions.2.qExpression",
-			options: [{
-				value: "1",
-				label: "Left"
-			}, {
-				value: "2",
-				label: "Right"
-			}, {
-				value: "3",
-				label: "Center"
-			}]
-		},
-		textsize = {
-			type: "string",
-			ref: "qAttributeExpressions.3.qExpression",
-			label: "Text size(in px)",
-			component: "expression",
-			defaultValue: "='12'"
-		},
-		Addcss = {
-			type: "string",
-			ref: "qAttributeExpressions.4.qExpression",
-			label: "Additional Style(Use standard CSS)",
-			component: "expression"
-		},
-		HeaderAlign = {
-			type: "string",
-			component: "dropdown",
-			label: "Header Align",
-			ref: "qDef.HeaderAlignation",
-			options: [{
-				value: "left",
-				label: "Left"
-			}, {
-				value: "right",
-				label: "Right"
-			}, {
-				value: "center",
-				label: "Center"
-			}],
-			defaultValue: "center"
-		},
-		backgroundcolorHeader = {
-			type: "string",
-			ref: "qDef.backgroundcolorHeader",
-			label: "Header Background Color",
-			expression: "always",
-			defaultValue: "='#2A2A2A'"
-		},
-		txtcolorHeader = {
-			type: "string",
-			ref: "qDef.txtcolorHeader",
-			label: "Header Text Color",
-			expression: "always",
-			defaultValue: "='#C3C3C4'"
-		},
-		colSpanHeader = {
-			type: "integer",
-			ref: "qDef.colSpanHeader",
-			label: "Header Column Span"
-		},
-		hide = {
-			type: "boolean",
-			component: "switch",
-			label: "Hide Header",
-			ref: "qDef.hide",
-			options: [{
-				value: true,
-				label: "On"
-			}, {
-				value: false,
-				label: "Not On"
-			}],
-			defaultValue: false
-		},
-		Clabel = {
-			type: "string",
-			ref: "label",
-			label: "Label",
-			expression: "optional"
-		},
-		custom_row_header_color = {
-			label: "Text Color",
-			type: "string",
-			ref: "color",
-			expression: "optional"
-		},
-		custom_row_header_bgcolor = {
-			label: "Text Background Color",
-			type: "string",
-			ref: "bgcolor",
-			expression: "optional"
-		},
-		colspan = {
-			label: "Colspan",
-			component: "string",
-			ref: "colspan"
-		},
-		custom_row_header_addcss = {
-			label: "Custom CSS",
-			type: "string",
-			ref: "addcss",
-			expression: "optional"
-		},
-		fixHeader = {
-			type: "boolean",
-			component: "switch",
-			label: "Fixed Header",
-			ref: "fixHeader",
-			options: [{
-				value: true,
-				label: "On"
-			}, {
-				value: false,
-				label: "Not On"
-			}],
-			defaultValue: true
-		},
-		fixFooter = {
-			type: "boolean",
-			component: "switch",
-			label: "Fixed Footer",
-			ref: "fixFooter",
-			options: [{
-				value: true,
-				label: "On"
-			}, {
-				value: false,
-				label: "Not On"
-			}],
-			defaultValue: true
-		},
-		fixRight = {
-			type: "boolean",
-			component: "switch",
-			label: "Fixed Right",
-			ref: "fixRight",
-			options: [{
-				value: true,
-				label: "On"
-			}, {
-				value: false,
-				label: "Not On"
-			}],
-			defaultValue: false,
-			show: function(d) {
-				return d.fixHeader || d.fixFooter;
-			}
-		},
-		// fixRightCol = {
-		// 	type: "integer",
-		// 	ref: "fixRightCol",
-		// 	label: "Fixed Right Column",
-		// 	expression: "optional",
-		// 	defaultValue: "1",
-		// 	show: function(d) {
-		// 		return d.fixRight;
-		// 	}
-		// },
-		fixLeft = {
-			type: "boolean",
-			component: "switch",
-			label: "Fixed Left",
-			ref: "fixLeft",
-			options: [{
-				value: true,
-				label: "On"
-			}, {
-				value: false,
-				label: "Not On"
-			}],
-			defaultValue: false,
-			show: function(d) {
-				return d.fixHeader || d.fixFooter;
-			}
-		},
-		fixLeftCol = {
-			type: "integer",
-			ref: "fixLeftCol",
-			label: "Fixed Left Column",
-			expression: "optional",
-			defaultValue: "1",
-			show: function(d) {
-				return d.fixLeft;
-			}
-		},
-		showIF = {
-			type: "string",
-			label: "Show Column IF",
-			ref: "qCalcCondition.qCond.qv", 
-			component: "expression"
-		};
+		label: "Add all the below as string(='color | bdcolor | textalign | header bgcolor | header color')",
+		component: "text"
+	},
+	ColWidth = {
+		type: "integer",
+		ref: "qDef.ColWidth",
+		label: "Column Width",
+		defaultValue: 100
+	},
+	textcolor = {
+		type: "string",
+		ref: "qAttributeExpressions.0.qExpression",
+		label: "Text Color",
+		//expression: "always",
+		component: "expression",
+		defaultValue: "='#000'"
+	},
+	backgroundcolor = {
+		type: "string",
+		ref: "qAttributeExpressions.1.qExpression",
+		label: "Background Color",
+		//expression: "always",
+		component: "expression",
+		defaultValue: "='white'"
+	},
+	/*textaligntext = {
+		type: "string",
+		ref: "qAttributeExpressions.2.qExpression",
+		label: "Text align(left,right,center)",
+		//expression: "always",
+		component: "expression",
+		defaultValue: "='center'"
+	},*/
+	textalign = {
+		type: "string",
+		component: "dropdown",
+		label: "Text Align",
+		ref: "qAttributeExpressions.2.qExpression",
+		options: [{
+			value: "1",
+			label: "Left"
+		}, {
+			value: "2",
+			label: "Right"
+		}, {
+			value: "3",
+			label: "Center"
+		}]
+	},
+	textsize = {
+		type: "string",
+		ref: "qAttributeExpressions.3.qExpression",
+		label: "Text size(in px)",
+		//expression: "always",
+		component: "expression",
+		defaultValue: "='12'"
+	},
+	Addcss = {
+		type: "string",
+		ref: "qAttributeExpressions.4.qExpression",
+		label: "Additional Style(Use standard CSS)",
+		//expression: "always",
+		component: "expression"
+		//defaultValue: "=''"
+	},
+	HeaderAlign = {
+		type: "string",
+		component: "dropdown",
+		label: "Header Align",
+		ref: "qDef.HeaderAlignation",
+		options: [{
+			value: "left",
+			label: "Left"
+		}, {
+			value: "right",
+			label: "Right"
+		}, {
+			value: "center",
+			label: "Center"
+		}],
+		defaultValue: "center"
+	},
+	backgroundcolorHeader = {
+		type: "string",
+		ref: "qDef.backgroundcolorHeader",
+		label: "Header Background Color",
+		expression: "always",
+		//component: "expression",
+		defaultValue: "='white'"
+	},
+	txtcolorHeader = {
+		type: "string",
+		ref: "qDef.txtcolorHeader",
+		label: "Header Text Color",
+		expression: "always",
+		//component: "expression",
+		defaultValue: "='#000'"
+	},
+	colSpanHeader = {
+		type: "integer",
+		ref: "qDef.colSpanHeader",
+		label: "Header Column Span"
+	},
+	hide = {
+		type: "boolean",
+		component: "switch",
+		label: "Hide Header",
+		ref: "qDef.hide",
+		options: [{
+			value: true,
+			label: "On"
+		}, {
+			value: false,
+			label: "Not On"
+		}],
+		defaultValue: false
+	},
+	Clabel = {
+		type: "string",
+		ref: "label",
+		label: "Label",
+		expression: "optional"
+	},
+	custom_row_header_color = {
+		label: "Text Color",
+		type: "string",
+		ref: "color",
+		expression: "optional"
+	},
+	custom_row_header_bgcolor = {
+		label: "Text Background Color",
+		type: "string",
+		ref: "bgcolor",
+		expression: "optional"
+	},
+	colspan = {
+		label: "Colspan",
+		component: "string",
+		ref: "colspan"
+	},
+	custom_row_header_addcss = {
+		label: "Custom CSS",
+		type: "string",
+		ref: "addcss",
+		expression: "optional"
+	},
+	fixHeader = {
+		type: "boolean",
+		component: "switch",
+		label: "Fixed Header",
+		ref: "fixHeader",
+		options: [{
+			value: true,
+			label: "On"
+		}, {
+			value: false,
+			label: "Not On"
+		}],
+		defaultValue: true
+	},
+	fixFooter = {
+		type: "boolean",
+		component: "switch",
+		label: "Fixed Footer",
+		ref: "fixFooter",
+		options: [{
+			value: true,
+			label: "On"
+		}, {
+			value: false,
+			label: "Not On"
+		}],
+		defaultValue: true
+	},
+	fixLeft = {
+		type: "boolean",
+		component: "switch",
+		label: "Fixed Left",
+		ref: "fixLeft",
+		options: [{
+			value: true,
+			label: "On"
+		}, {
+			value: false,
+			label: "Not On"
+		}],
+		defaultValue: false,
+		show: function(d) {
+			return d.fixHeader || d.fixFooter;
+		}
+	},
+	fixLeftCol = {
+		type: "integer",
+		ref: "fixLeftCol",
+		label: "Fixed Left Column",
+		expression: "optional",
+		defaultValue: "1",
+		show: function(d) {
+			return d.fixLeft;
+		}
+	},
+	showIF = {
+		type: "string",
+		label: "Show Column IF",
+		ref: "qCalcCondition.qCond.qv", 
+		component: "expression"
+	};
 	return {
 		type: "items",
 		component: "accordion",
@@ -239,8 +220,6 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					info: colorInfo,
 					ColWidth: ColWidth,
 					textcolor: textcolor,
-					backgroundcolor: backgroundcolor,
-					altbackgroundcolor: rowaltbackgroundcolor,
 					textalign: textalign,
 					textsize: textsize,
 					Addcss: Addcss,
@@ -288,7 +267,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					DialogTitle: {
 						ref: "qAttributeExpressions.7.qExpression",
 						type: "string",
-						label: "DialogTitle",
+						label: "Dialog Title",
 						component: "expression",
 						defaultValue: "='Test'",
 						show: function(d) {
@@ -298,7 +277,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					Dialogwidth: {
 						ref: "qAttributeExpressions.8.qExpression",
 						type: "string",
-						label: "Dialog Width (write px or %)",
+						label: "Dialog Width ( % )",
 						component: "expression",
 						defaultValue: "='90%'",
 						show: function(d) {
@@ -308,7 +287,7 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					Dialogheight: {
 						ref: "qAttributeExpressions.9.qExpression",
 						type: "string",
-						label: "Dialog Height (write px or %)",
+						label: "Dialog Height ( px )",
 						component: "expression",
 						defaultValue: "='900px'",
 						show: function(d) {
@@ -371,7 +350,6 @@ define(["qlik", "./getMasterItems", "jquery"], function(qlik, getMasterItems, $)
 					info: colorInfo,
 					ColWidth: ColWidth,
 					textcolor: textcolor,
-					backgroundcolor: backgroundcolor,
 					textalign: textalign,
 					textsize: textsize,
 					Addcss: Addcss,

@@ -1,2 +1,11 @@
 .DS_Store
 *.zip
+node_modules\*
+dist\*
+node_modules/*
+dist/*
+node_modules*
+dist*
+package-lock.json
+package.json
+qext.config.json
